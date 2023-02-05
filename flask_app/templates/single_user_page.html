@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Single User</title>
+</head>
+
+<body class="bg-primary p-2">
+    <div>
+        <h1>Single User</h1>
+        <h2>{{ single_user.first_name }} {{ single_user.last_name }}</h2>
+    </div>
+    <table class="table text-warning table-hover table-dark table-striped table-bordered border-warning mt-3">
+        <thead>
+            <tr>
+                <th>Favorites</th>
+                <th>Title</th>
+                <th>Number of Pages</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for users_and_books in all_users_and_books %}
+            <tr>
+                <td>{{ users_and_books.book_id }}</td>
+                <td>{{ users_and_books.title }}</td>
+                <td>{{ users_and_books.num_of_pages }}</td>
+                <td>
+                    <a class="text-warning text-decoration-none" href="/unfavorite/{{ users_and_books.book_id }}">Delete Favorite</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form action="/favorite/book" method="post">
+        <label for="favorites">Favorite Books</label>
+        <select name="favorites">
+            <option disabled selected></option>
+            {% for favorite_book in favorite_books %}
+            <option value="{{ favorite_book.title }}">{{ favorite_book.title }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Favorite">
+    </form>
+</body>
+
+</html>
