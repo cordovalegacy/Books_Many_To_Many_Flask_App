@@ -36,3 +36,5 @@ def joining_table():
     }
     User.join_users_and_books(users_and_books)
     return redirect(f"/display_user/{request.form['user_id']}")
+
+@app.route('/placeholder')
