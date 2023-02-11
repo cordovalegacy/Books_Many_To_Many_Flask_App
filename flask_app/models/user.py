@@ -69,10 +69,3 @@ class User:
             user.favorites.append(Book(books_data))
         return user
 
-    @classmethod
-    def unfavorite(cls, data):
-        query = """
-                DELETE FROM users
-                WHERE id = %(id)s
-                ;"""
-        return connectToMySQL('users').query_db(query, data)

@@ -11,17 +11,13 @@
 </head>
 
 <body class="bg-primary p-2">
-    <div>
-        <h1>Single User</h1>
-        <h2>{{ single_user.first_name }} {{ single_user.last_name }}</h2>
-    </div>
+        <h1>{{ single_user.first_name }} {{ single_user.last_name }}</h1>
     <table class="table text-warning table-hover table-dark table-striped table-bordered border-warning mt-3">
         <thead>
             <tr>
                 <th>Favorites</th>
                 <th>Title</th>
                 <th>Number of Pages</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -30,15 +26,13 @@
                 <td>{{ favorite_book.id }}</td>
                 <td>{{ favorite_book.title }}</td>
                 <td>{{ favorite_book.num_of_pages }}</td>
-                <td>
-                    <a class="text-warning text-decoration-none" href="/unfavorite/{{ favorite_book.book_id }}">Delete</a>
-                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <form action="/add_books_to_favorites" method="post">
         <input type="hidden" name="user_id" value="{{single_user.id}}">
+        <h3>Add Favorites:</h3>
         <label for="book_id">Favorite Books</label>
         <select name="book_id">
             <option disabled selected></option>
@@ -48,6 +42,7 @@
         </select>
         <input type="submit" value="Favorite">
     </form>
+    <a class="text-warning" href="/">Go Home</a>
 </body>
 
 </html>

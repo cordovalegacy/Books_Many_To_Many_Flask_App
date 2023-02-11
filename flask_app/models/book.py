@@ -12,6 +12,14 @@ class Book:
         self.updated_at = book_data['updated_at']
 
     @classmethod
+    def save_books(cls, data):
+        query = """
+                INSERT INTO books (title, num_of_pages)
+                VALUES (%(title)s, %(num_of_pages)s)
+                ;"""
+        return connectToMySQL('books').query_db(query, data)
+
+    @classmethod
     def non_favorite_books(cls, non_favorites_data):
         query = """
                 SELECT * FROM books 

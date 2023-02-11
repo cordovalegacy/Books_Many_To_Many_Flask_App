@@ -8,7 +8,7 @@ def index():
     users = User.display_all_users()
     return render_template('home_page.html', all_users = users)
 
-@app.route('/create')
+@app.route('/create_user')
 def create_page():
     return render_template('create_page.html')
 
@@ -37,10 +37,3 @@ def add_books_to_favorites():
     User.save_book_to_user(favorite_book)
     return redirect(f"/display_user/{request.form['user_id']}")
 
-@app.route('/unfavorite/<int:id>')
-def unfavorite(id):
-    data = {
-        'id': id
-    }
-    User.unfavorite(data)
-    return redirect('/display_user/{id}')
