@@ -20,6 +20,14 @@ class User:
         return connectToMySQL('books').query_db(query, author_data)
 
     @classmethod
+    def save_book_to_user(cls, users_favorite_books_data):
+        query = """
+                INSERT INTO users_books (user_id, book_id) 
+                VALUES (%(user_id)s, %(book_id)s)
+                ;"""
+        return connectToMySQL('books').query_db(query, users_favorite_books_data)
+
+    @classmethod
     def display_all_users(cls):
         query = """
                 SELECT * FROM users
@@ -34,7 +42,7 @@ class User:
     def display_single_user(cls, single_user_data):
         query = """
                 SELECT * FROM users 
-                WHERE id = %(id)s
+                WHERE id = %(user_id)s
                 ;"""
         results = connectToMySQL('books').query_db(query, single_user_data)
         return cls(results[0])
@@ -54,7 +62,17 @@ class User:
             books_data = {
                 'id': row['books.id'],
                 'title': row['title'],
-                'num_of_pages': row['num_of_pages']
+                'num_of_pages': row['num_of_pages'],
+                'created_at': row['books.created_at'],
+                'updated_at': row['books.updated_at']
             }
-            user.favorites.append(books_data)
-        return 
+            user.favorites.append(Book(books_data))
+        return user
+
+    @classmethod
+    def unfavorite(cls, data):
+        query = """
+                DELETE FROM users
+                WHERE id = %(id)s
+                ;"""
+        return connectToMySQL('users').query_db(query, data)

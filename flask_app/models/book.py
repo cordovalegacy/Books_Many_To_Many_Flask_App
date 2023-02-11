@@ -11,17 +11,18 @@ class Book:
         self.created_at = book_data['created_at']
         self.updated_at = book_data['updated_at']
 
-    # @classmethod
-    # def favorite_books(cls, favorites_data):
-    #     query = """
-    #             SELECT * FROM books 
-    #             WHERE books.id 
-    #             IN
-    #             (SELECT book_id FROM favorites WHERE user_id = %(id)s)
-    #             ;"""
-    #     results = connectToMySQL('books').query_db(query, favorites_data)
-    #     books = []
-    #     for row in results:
-    #         books.append(cls(row))
-    #         print(books)
-    #         return books
+    @classmethod
+    def non_favorite_books(cls, non_favorites_data):
+        query = """
+                SELECT * FROM books 
+                WHERE books.id 
+                NOT IN
+                (SELECT book_id FROM users_books WHERE user_id = %(user_id)s)
+                ;"""
+        results = connectToMySQL('books').query_db(query, non_favorites_data)
+        # print(results)
+        books = []
+        for row in results:
+            print(row)
+            books.append(cls(row))
+        return books

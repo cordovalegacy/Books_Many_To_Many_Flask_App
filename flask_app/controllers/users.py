@@ -24,14 +24,23 @@ def create_user():
 @app.route('/display_user/<int:id>')
 def display_user(id):
     single_user_data = {
-        'id': id
+        'user_id': id
     }
-    return render_template('single_user_page.html', single_user = User.display_single_user(single_user_data), favorite_books = User.join_users_and_books(single_user_data))
+    return render_template('single_user_page.html', single_user = User.display_single_user(single_user_data), non_favorite_books = Book.non_favorite_books(single_user_data), user_instance = User.join_users_and_books(single_user_data))
 
-@app.route('/joining_table', methods = ['POST'])
-def joining_table():
-    users_and_books_data = {
+@app.route('/add_books_to_favorites', methods=['POST'])
+def add_books_to_favorites():
+    favorite_book = {
+        'book_id': request.form['book_id'],
         'user_id': request.form['user_id']
     }
-    User.join_users_and_books(users_and_books_data)
+    User.save_book_to_user(favorite_book)
     return redirect(f"/display_user/{request.form['user_id']}")
+
+@app.route('/unfavorite/<int:id>')
+def unfavorite(id):
+    data = {
+        'id': id
+    }
+    User.unfavorite(data)
+    return redirect('/display_user/{id}')

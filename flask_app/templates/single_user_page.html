@@ -25,24 +25,25 @@
             </tr>
         </thead>
         <tbody>
-            {% for users_and_books in all_users_and_books %}
+            {% for favorite_book in user_instance.favorites %}
             <tr>
-                <td>{{ users_and_books.book_id }}</td>
-                <td>{{ users_and_books.title }}</td>
-                <td>{{ users_and_books.num_of_pages }}</td>
+                <td>{{ favorite_book.id }}</td>
+                <td>{{ favorite_book.title }}</td>
+                <td>{{ favorite_book.num_of_pages }}</td>
                 <td>
-                    <a class="text-warning text-decoration-none" href="/unfavorite/{{ users_and_books.book_id }}">Delete Favorite</a>
+                    <a class="text-warning text-decoration-none" href="/unfavorite/{{ favorite_book.book_id }}">Delete</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <form action="/joining_table" method="post">
-        <label for="favorites">Favorite Books</label>
-        <select name="favorites">
+    <form action="/add_books_to_favorites" method="post">
+        <input type="hidden" name="user_id" value="{{single_user.id}}">
+        <label for="book_id">Favorite Books</label>
+        <select name="book_id">
             <option disabled selected></option>
-            {% for favorite_book in favorite_books %}
-            <option value="{{ favorite_book.title }}">{{ favorite_book.title }}</option>
+            {% for non_favorite_book in non_favorite_books %}
+            <option value="{{ non_favorite_book.id }}">{{ non_favorite_book.title }}</option>
             {% endfor %}
         </select>
         <input type="submit" value="Favorite">
