@@ -13,7 +13,7 @@
 <body class="bg-primary p-2 text-center">
     <h1>Home Page</h1>
     <div class="bg-dark w-25 m-auto d-flex justify-content-evenly text-warning">
-        <a class="text-warning text-decoration-none" href="/create_book">Create Book</a>
+        <a class="text-warning text-decoration-none" href="/create_book_page">Create Book</a>
         <a class="text-warning text-decoration-none" href="/create_user">Create User</a>
     </div>
     <table class="table text-warning table-hover table-dark table-striped table-bordered border-warning mt-3">
@@ -37,6 +37,32 @@
                 <td>{{ user.updated_at }}</td>
                 <td>
                     <a class="text-warning text-decoration-none" href="/display_user/{{ user.id }}">Show User</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table class="table text-warning table-hover table-dark table-striped table-bordered border-warning mt-3">
+        <thead>
+            <tr>
+                <th>Book ID</th>
+                <th>Title</th>
+                <th>Number of Pages</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in all_books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.num_of_pages }}</td>
+                <td>{{ book.created_at }}</td>
+                <td>{{ book.updated_at }}</td>
+                <td>
+                    <a class="text-warning text-decoration-none" href="/single_book_page/{{ book.id }}">Show Book</a>
                 </td>
             </tr>
             {% endfor %}

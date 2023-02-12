@@ -6,7 +6,8 @@ from flask_app.models.book import Book
 @app.route('/')
 def index():
     users = User.display_all_users()
-    return render_template('home_page.html', all_users = users)
+    books = Book.display_all_books()
+    return render_template('home_page.html', all_users = users, all_books = books)
 
 @app.route('/create_user')
 def create_page():
