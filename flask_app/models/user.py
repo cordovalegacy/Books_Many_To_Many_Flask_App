@@ -1,5 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask_app.models.book import Book
+from flask_app.models import book
 
 class User:
 
@@ -39,6 +39,22 @@ class User:
         return users
 
     @classmethod
+    def non_favorite_users(cls, non_favorites_data):
+        query = """
+                SELECT * FROM users 
+                WHERE users.id 
+                NOT IN
+                (SELECT user_id FROM users_books WHERE book_id = %(id)s)
+                ;"""
+        results = connectToMySQL('books').query_db(query, non_favorites_data)
+        print(results)
+        users = []
+        for row in results:
+            print(row)
+            users.append(cls(row))
+        return users
+
+    @classmethod
     def display_single_user(cls, single_user_data):
         query = """
                 SELECT * FROM users 
@@ -51,14 +67,16 @@ class User:
     def join_users_and_books(cls, users_and_books_data):
         query = """
                 SELECT * FROM users 
-                JOIN users_books 
-                ON users.id = user_id
-                JOIN books ON book_id = books.id 
+                LEFT JOIN users_books 
+                ON users.id = users_books.user_id
+                LEFT JOIN books ON books.id = users_books.book_id 
                 WHERE users.id = %(user_id)s
                 ;"""
         results = connectToMySQL('books').query_db(query, users_and_books_data)
         user = cls(results[0])
         for row in results:
+            if row['books.id'] == None:
+                break
             books_data = {
                 'id': row['books.id'],
                 'title': row['title'],
@@ -66,6 +84,7 @@ class User:
                 'created_at': row['books.created_at'],
                 'updated_at': row['books.updated_at']
             }
-            user.favorites.append(Book(books_data))
+            user.favorites.append(book.Book(books_data))
+        print(user)
         return user
 

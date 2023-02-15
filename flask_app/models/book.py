@@ -40,8 +40,8 @@ class Book:
     def display_single_book(cls, data):
         query = """
                 SELECT * FROM books
-                LEFT JOIN users ON books.id = favorites.book_id
-                LEFT JOIN users ON users.id = favorites.user_id
+                LEFT JOIN users_books ON books.id = users_books.book_id
+                LEFT JOIN users ON users.id = users_books.user_id
                 WHERE books.id = %(id)s
                 ;"""
         results = connectToMySQL('books').query_db(query, data)
@@ -56,7 +56,9 @@ class Book:
                 'created_at': row['created_at'],
                 'updated_at':row['updated_at']
             }
-            book.authors.append(user.User())
+            result.authors.append(user.User(data))
+        print(result)
+        return result
             
     @classmethod
     def display_all_books(cls):
@@ -64,3 +66,11 @@ class Book:
                 SELECT * FROM books
                 ;"""
         return connectToMySQL('books').query_db(query)
+
+    @classmethod
+    def save_user_to_book(cls, book_users_can_favorite):
+        query = """
+                INSERT INTO users_books (user_id, book_id)
+                VALUES (%(user_id)s, %(book_id)s)
+                ;"""
+        return connectToMySQL('books').query_db(query, book_users_can_favorite)

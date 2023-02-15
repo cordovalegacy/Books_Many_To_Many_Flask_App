@@ -1,6 +1,7 @@
 from flask_app import app
 from flask import render_template, redirect, request
 from flask_app.models.book import Book
+from flask_app.models import user
 
 @app.route('/create_book_page')
 def create_book_page():
@@ -20,4 +21,13 @@ def single_book_page(id):
     data = {
         'id': id
     }
-    return render_template('single_book_page.html', single_book_data = Book.display_single_book(data))
+    return render_template('single_book_page.html', single_book_data = Book.display_single_book(data), non_favorite_users = user.User.non_favorite_users(data))
+
+@app.route('/add_users_favorites', methods=['POST'])
+def add_users_favorites():
+    user_favorite = {
+        'book_id': request.form['book_id'],
+        'user_id': request.form['user_id']
+    }
+    Book.save_user_to_book(user_favorite)
+    return redirect(f"/single_book_page/{request.form['book_id']}")

@@ -15,33 +15,33 @@
     <table class="table text-warning table-hover table-dark table-striped table-bordered border-warning mt-3">
         <thead>
             <tr>
-                <th>Favorites</th>
-                <th>Title</th>
-                <th>Number of Pages</th>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
             </tr>
         </thead>
         <tbody>
-            {% for book in single_book_data %}
+            {% for book in single_book_data.authors %}
             <tr>
                 <td>{{ book.id }}</td>
-                <td>{{ book.title }}</td>
-                <td>{{ book.num_of_pages }}</td>
+                <td>{{ book.first_name }}</td>
+                <td>{{ book.last_name }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <!-- <form action="/add_books_to_favorites" method="post">
+    <form action="/add_users_favorites" method="post">
         <input type="hidden" name="book_id" value="{{single_book_data.id}}">
         <h3>Add Favorites:</h3>
-        <label for="book_id">Favorite Books</label>
-        <select name="book_id">
+        <label for="user_id">Add Book to User's Favorite</label>
+        <select name="user_id">
             <option disabled selected></option>
-            {% for non_favorite_book in non_favorite_books %}
-            <option value="{{ non_favorite_book.id }}">{{ non_favorite_book.title }}</option>
+            {% for non_favorite_user in non_favorite_users %}
+            <option value="{{ non_favorite_user.id }}">{{ non_favorite_user.first_name }} {{ non_favorite_user.last_name }}</option>
             {% endfor %}
         </select>
         <input type="submit" value="Favorite">
-    </form> -->
+    </form>
     <a class="text-warning" href="/">Go Home</a>
 </body>
 
